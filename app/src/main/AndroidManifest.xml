@@ -22,7 +22,7 @@
 
         <!--only a single task of our activity will exist at one time -->
         <activity
-            android:name=".MainActivity"
+            android:name=".UI.MainActivity"
             android:launchMode="singleTask"
             android:exported="true">
             <intent-filter>
