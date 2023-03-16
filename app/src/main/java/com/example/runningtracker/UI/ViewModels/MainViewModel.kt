@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
-//collect the data from the repository and provide it for all thos fragments that will need it
+//collect the data from the repository and provide it for all those fragments that will need it
 //we need the instance of the main repository
 
 @HiltViewModel
