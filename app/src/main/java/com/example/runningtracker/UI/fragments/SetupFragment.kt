@@ -27,7 +27,7 @@ class SetupFragment :Fragment (R.layout.fragment_setup) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.tvContinue.setOnClickListener{
-            findNavController().navigate(R.id.action_setupFragment_to_runFragment)
+            findNavController().navigate(R.id.action_setupFragment_to_runFragment2)
         }
     }
 }

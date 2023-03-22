@@ -33,7 +33,7 @@ class RunFragment : Fragment(R.layout.fragment_run) {
   super.onViewCreated(view, savedInstanceState)
 
   binding.fab.setOnClickListener{
-   findNavController().navigate(R.id.action_runFragment_to_trackingFragment)
+   findNavController().navigate(R.id.action_runFragment_to_trackingFragment3)
   }
  }
 

@@ -7,17 +7,17 @@
     <fragment
         android:id="@+id/runFragment"
         android:name="com.example.runningtracker.UI.fragments.RunFragment"
-        android:label="RunFragment" >
+        android:label="RunFragment">
         <action
-            android:id="@+id/action_runFragment_to_trackingFragment"
+            android:id="@+id/action_runFragment_to_trackingFragment3"
             app:destination="@id/trackingFragment" />
     </fragment>
     <fragment
         android:id="@+id/setupFragment"
         android:name="com.example.runningtracker.UI.fragments.SetupFragment"
-        android:label="SetupFragment" >
+        android:label="SetupFragment">
         <action
-            android:id="@+id/action_setupFragment_to_runFragment"
+            android:id="@+id/action_setupFragment_to_runFragment2"
             app:destination="@id/runFragment" />
     </fragment>
     <fragment
@@ -31,9 +31,9 @@
     <fragment
         android:id="@+id/trackingFragment"
         android:name="com.example.runningtracker.UI.fragments.TrackingFragment"
-        android:label="TrackingFragment" >
+        android:label="TrackingFragment">
         <action
-            android:id="@+id/action_trackingFragment_to_runFragment"
+            android:id="@+id/action_trackingFragment_to_runFragment3"
             app:destination="@id/runFragment" />
     </fragment>
 </navigation>
