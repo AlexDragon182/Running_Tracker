@@ -1,11 +1,14 @@
 package com.example.runningtracker.UI
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.example.runningtracker.Other.Constants.ACTION_SHOW_TRACKING_FRAGMENT
 import com.example.runningtracker.R
 import com.example.runningtracker.database.RunDAO
 import com.example.runningtracker.databinding.ActivityMainBinding
@@ -25,6 +28,8 @@ private lateinit var binding: ActivityMainBinding
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        navigateTrackingFragmentIfNeeded(intent)
+
         setSupportActionBar(binding.toolbar)
         binding.bottomNavigationView.setupWithNavController(navController)
 
@@ -36,8 +41,16 @@ private lateinit var binding: ActivityMainBinding
 
             }
         }
+    }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        navigateTrackingFragmentIfNeeded(intent)
+    }
 
-
+    private fun navigateTrackingFragmentIfNeeded(intent: Intent?){
+        if(intent?.action == ACTION_SHOW_TRACKING_FRAGMENT){
+            binding.bottomNavigationView.findNavController().navigate(R.id.action_global_trackingFragment)
+        }
     }
 }
