@@ -1,9 +1,11 @@
 package com.example.runningtracker.UI.ViewModels
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.runningtracker.Repositories.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 //collect the data from the repository and provide it for all those fragments that will need it
@@ -13,4 +15,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     val mainrepository : MainRepository
 ): ViewModel(){
+
+    fun insertRun(run : Run) = viewModelScope.launch {
+        mainrepository.insertRun(run)
+    }
 }
