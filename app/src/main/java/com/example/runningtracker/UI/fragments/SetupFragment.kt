@@ -12,6 +12,7 @@ import com.example.runningtracker.Other.Constants.KEY_FIRST_TIME_TOGGLE
 import com.example.runningtracker.Other.Constants.KEY_NAME
 import com.example.runningtracker.Other.Constants.KEY_WEIGHT
 import com.example.runningtracker.R
+import com.example.runningtracker.UI.MainActivity
 import com.example.runningtracker.databinding.ActivityMainBinding
 import com.example.runningtracker.databinding.FragmentSetupBinding
 import com.google.android.material.snackbar.Snackbar
@@ -75,7 +76,7 @@ sharedPref.edit()
     .putBoolean(KEY_FIRST_TIME_TOGGLE, false)
     .apply()
         val toolbarText = "Let's go, $name!"
-        requireActivity().tvToolbarTitle.text = toolbarText
+        (requireActivity() as MainActivity).binding.tvToolbarTitle.text = toolbarText
         return true
     }
 }

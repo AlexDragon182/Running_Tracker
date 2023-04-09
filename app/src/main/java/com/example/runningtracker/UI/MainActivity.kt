@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     private val navController by lazy { (supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment).navController }
 
 
-private lateinit var binding: ActivityMainBinding
+lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +32,7 @@ private lateinit var binding: ActivityMainBinding
 
         setSupportActionBar(binding.toolbar)
         binding.bottomNavigationView.setupWithNavController(navController)
+        binding.bottomNavigationView.setOnNavigationItemReselectedListener { /* NO-OP*/ }
 
         navController.addOnDestinationChangedListener{_, destination, _ ->
             when(destination.id){

@@ -1,5 +1,6 @@
 package com.example.runningtracker.adapters
 
+import android.graphics.Bitmap
 import android.icu.util.Calendar
 import android.os.Build
 import android.view.LayoutInflater
@@ -21,13 +22,11 @@ import java.util.*
 class RunAdapter : RecyclerView.Adapter<RunAdapter.RunViewHolder>() {
 
 
-
-     inner class RunViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    inner class RunViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val binding = ItemRunBinding.bind(itemView)
          @RequiresApi(Build.VERSION_CODES.N)
          fun bind (run:Run){
-             Glide.with(this).load(run.img).into(binding.ivRunImage)
-
+             Glide.with(itemView).load(run.img).into(binding.ivRunImage)
              val  calendar = Calendar.getInstance().apply {
                  timeInMillis = run.timestamp
              }
