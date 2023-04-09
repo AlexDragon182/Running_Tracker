@@ -26,7 +26,7 @@ class RunAdapter : RecyclerView.Adapter<RunAdapter.RunViewHolder>() {
         val binding = ItemRunBinding.bind(itemView)
          @RequiresApi(Build.VERSION_CODES.N)
          fun bind (run:Run){
-             Glide.with(itemView).load(run.img).into(binding.ivRunImage)
+             Glide.with(itemView.context).load(run.img).into(binding.ivRunImage)
              val  calendar = Calendar.getInstance().apply {
                  timeInMillis = run.timestamp
              }
