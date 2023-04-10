@@ -175,7 +175,7 @@ class TrackingFragment:Fragment(R.layout.fragment_tracking) {
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
-        if(curTimeInMillis>0L){
+        if(curTimeInMillis > 0L){
             this.menu?.getItem(0)?.isVisible = true
         }
     }

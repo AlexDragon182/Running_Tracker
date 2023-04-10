@@ -9,6 +9,7 @@ import com.example.runningtracker.Other.Constants
 import com.example.runningtracker.R
 import com.example.runningtracker.UI.MainActivity
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,7 +23,7 @@ class ServiceModule {
 
     @ServiceScoped
     @Provides
-    fun provideFusedLocationProviderClient(@ApplicationContext app: Context) = FusedLocationProviderClient(app)
+    fun provideFusedLocationProviderClient(@ApplicationContext app: Context) = LocationServices.getFusedLocationProviderClient(app)
 
     @ServiceScoped
     @Provides

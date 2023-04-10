@@ -44,6 +44,7 @@ object TrackingUtility {
             )
             distance+=result [0]
         }
+        return distance
     }
 
     fun getFormattedStopWatchTime(ms: Long, includeMilis:Boolean=false): String {

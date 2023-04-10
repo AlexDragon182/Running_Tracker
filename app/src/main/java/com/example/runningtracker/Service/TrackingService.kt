@@ -34,6 +34,7 @@ import com.example.runningtracker.UI.MainActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.AndroidEntryPoint
@@ -74,7 +75,7 @@ class TrackingService : LifecycleService() {
         curNotificationBuilder = baseNotificationBuilder
 
         postInitValues()
-        fusedLocationProviderClient = FusedLocationProviderClient(this)
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         isTracking.observe(this, Observer{
             updateLocationTracking(it)
