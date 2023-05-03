@@ -53,10 +53,10 @@ class SetupFragment :Fragment (R.layout.fragment_setup) {
             findNavController().navigate(R.id.action_setupFragment_to_runFragment2,savedInstanceState,navOptions)
         }
 
-        binding.tvContinue.setOnClickListener{
+        binding.tvContinue.setOnClickListener{//sets the on click listener
             val sucess = writePersonalDataToSharedPref()
             if(sucess){
-                findNavController().navigate(R.id.action_setupFragment_to_runFragment2)
+                findNavController().navigate(R.id.action_setupFragment_to_runFragment2)//.navigate allows you to go from one fragment to another
 
             }else {
                 Snackbar.make(requireView(),"Please enter all the fields", Snackbar.LENGTH_LONG).show()

@@ -54,7 +54,7 @@
             android:layout_height="match_parent"
             app:defaultNavHost="true"
             app:navGraph="@navigation/nav_graph" />
-        <!-- Sets this as nav host fragment -->
+        <!-- all of this code block, Sets this as nav host fragment -->
 
     </FrameLayout>
 

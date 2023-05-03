@@ -2,7 +2,7 @@ package com.example.runningtracker.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-//Data Acces Objects , describes all possible actions we want to use in the database
+//Data Access Objects , describes all possible actions we want to use in the database
 @Dao
 interface RunDAO {
     // insert the new run and provide the On conflict strategy

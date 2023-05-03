@@ -28,11 +28,11 @@ object AppModule {
 
     @Singleton //scope - each class in our class that running database will get same instance and not multiple instances
     @Provides // tell dagger that the result of this function can be used to provide other dependencies , and can be used to be injected into our classes
-    fun provideRunningDatabase(@ApplicationContext app: Context) = Room.databaseBuilder(app,RunningDatabase::class.java,RUNNING_DATABASE_NAME).build()
+    fun provideRunningDatabase(@ApplicationContext app: Context) = Room.databaseBuilder(app,RunningDatabase::class.java,RUNNING_DATABASE_NAME).build()// how the objects that we wanto to inject are being created
 
     @Singleton
     @Provides
-    fun provideRunDao(db:RunningDatabase) = db.getRunDao()
+    fun provideRunDao(db:RunningDatabase) = db.getRunDao()//pas the object as a parameter to that function
 
     @Singleton
     @Provides

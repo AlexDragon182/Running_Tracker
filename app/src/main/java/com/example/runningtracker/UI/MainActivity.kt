@@ -19,7 +19,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     private val navController by lazy { (supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment).navController }
-
+// finds the id of the navHostfragment to set it as the navHostFragment and store it in navController
 
 lateinit var binding: ActivityMainBinding
 
@@ -30,11 +30,11 @@ lateinit var binding: ActivityMainBinding
 
         navigateTrackingFragmentIfNeeded(intent)
 
-        setSupportActionBar(binding.toolbar)
-        binding.bottomNavigationView.setupWithNavController(navController)
+        setSupportActionBar(binding.toolbar)// tells android the id of the custom toolbar
+        binding.bottomNavigationView.setupWithNavController(navController)//setup navigation controllers
         binding.bottomNavigationView.setOnNavigationItemReselectedListener { /* NO-OP*/ }
 
-        navController.addOnDestinationChangedListener{_, destination, _ ->
+        navController.addOnDestinationChangedListener{_, destination, _ ->//this change the visibility of the Controller so it hides when its need it
             when(destination.id){
                 R.id.settingsFragment,R.id.runFragment,R.id.statisticsFragment ->
                     binding.bottomNavigationView.visibility = View.VISIBLE

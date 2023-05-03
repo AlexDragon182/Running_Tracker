@@ -13,7 +13,7 @@ import javax.inject.Inject
 //collect the data from the repository and provide it for all those fragments that will need it
 //we need the instance of the main repository
 
-@HiltViewModel
+@HiltViewModel //  Jetpack ViewModel that is constructor injected by Hilt
 class MainViewModel @Inject constructor(
     val mainrepository : MainRepository
 ): ViewModel(){

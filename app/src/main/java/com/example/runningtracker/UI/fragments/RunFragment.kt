@@ -75,7 +75,7 @@ class RunFragment : Fragment(R.layout.fragment_run),EasyPermissions.PermissionCa
 
 viewmodel.runs.observe(viewLifecycleOwner, Observer { runAdapter.sumbitList(it)})
   binding.fab.setOnClickListener{
-   findNavController().navigate(R.id.action_runFragment_to_trackingFragment3)
+   findNavController().navigate(R.id.action_runFragment_to_trackingFragment3)//this calls the direction in the nav graph to navigate.
   }
  }
 
