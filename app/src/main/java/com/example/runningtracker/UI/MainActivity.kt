@@ -28,7 +28,7 @@ lateinit var binding: ActivityMainBinding
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        navigateTrackingFragmentIfNeeded(intent)
+        navigateTrackingFragmentIfNeeded(intent)//for main activity destroyed, and service still running
 
         setSupportActionBar(binding.toolbar)// tells android the id of the custom toolbar
         binding.bottomNavigationView.setupWithNavController(navController)//setup navigation controllers
@@ -44,13 +44,13 @@ lateinit var binding: ActivityMainBinding
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent?) {// checks if the action is attached to that intent
         super.onNewIntent(intent)
         navigateTrackingFragmentIfNeeded(intent)
     }
 
     private fun navigateTrackingFragmentIfNeeded(intent: Intent?){
-        if(intent?.action == ACTION_SHOW_TRACKING_FRAGMENT){
+        if(intent?.action == ACTION_SHOW_TRACKING_FRAGMENT){//this is to know that the action was activated by the notifiation click
             binding.bottomNavigationView.findNavController().navigate(R.id.action_global_trackingFragment)
         }
     }

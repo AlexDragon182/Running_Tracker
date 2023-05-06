@@ -32,7 +32,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 import javax.inject.Inject
 import kotlin.math.round
-
+//in case of using a map view we need to handle the sates of lyfe cycle
+//using a map fragment inside another fragment is terrible design
+// a foreground service comes with a notification, the user is actively aware of the service running
+//services can be killed by the android system, so foreground service treats it as an activity
 const val CANCEL_TRACKING_DIALOG_TAG = "Dialog has been cancelled"
 
 @Suppress("UNUSED_EXPRESSION")
@@ -40,7 +43,7 @@ const val CANCEL_TRACKING_DIALOG_TAG = "Dialog has been cancelled"
 class TrackingFragment:Fragment(R.layout.fragment_tracking) {
     private var _binding: FragmentTrackingBinding? = null
     private val binding get() = _binding!!
-    private var map : GoogleMap? = null
+    private var map : GoogleMap? = null //instantiates google map, this is of the map object, and its google Type
     private val viewModel : MainViewModel by viewModels()
     private var isTracking = false
     private var pathPoints =  mutableListOf<Polyline>()
@@ -66,7 +69,7 @@ class TrackingFragment:Fragment(R.layout.fragment_tracking) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.mapView.onCreate(savedInstanceState)
+        binding.mapView.onCreate(savedInstanceState)//manage the life cycle of our map view
         binding.btnToggleRun.setOnClickListener{
             toggleRun()}
 
@@ -81,7 +84,7 @@ class TrackingFragment:Fragment(R.layout.fragment_tracking) {
             endRunAndSaveToDb()}
 
 
-        binding.mapView.getMapAsync{
+        binding.mapView.getMapAsync{// it puts the map in the MapView
             map = it
             addAllPolylines()
         }
@@ -229,11 +232,14 @@ class TrackingFragment:Fragment(R.layout.fragment_tracking) {
         }
     }
 
-    private fun sendCommandToService(action:String) =
-        Intent(requireContext(),TrackingService::class.java).also {
-            it.action = action
-            requireContext().startService(it)
+    private fun sendCommandToService(action:String) =//sends intent to our service with commands attached
+        Intent(requireContext(),TrackingService::class.java).also {//Context, Service class we want to send the command to
+            it.action = action// it . action to the action that we pass a parameter
+            requireContext().startService(it)//delivers the intent to our service and it reacts to the command
         }
+//all of this are here for managint the life cycle of the map view
+    //the map views gets destroyed in onStop
+    //in on destroyed it is already destroyed
 
     override fun onStart() {
         super.onStart()
@@ -260,7 +266,7 @@ class TrackingFragment:Fragment(R.layout.fragment_tracking) {
         binding.mapView?.onLowMemory()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
+    override fun onSaveInstanceState(outState: Bundle) {// this is important because we get our map asyncronously
         super.onSaveInstanceState(outState)
         binding.mapView.onSaveInstanceState(outState)
     }

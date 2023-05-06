@@ -28,7 +28,7 @@ class ServiceModule {
     @ServiceScoped
     @Provides
     fun provideMainActivityPendingIntent(@ApplicationContext app : Context) = PendingIntent.getActivity(app,0,
-    Intent(app, MainActivity::class.java).also {
+    Intent(app, MainActivity::class.java).also {//pending intent is used to send the user directly to the tracking fragment
         it.action = Constants.ACTION_SHOW_TRACKING_FRAGMENT
     },
     PendingIntent.FLAG_UPDATE_CURRENT
@@ -45,7 +45,7 @@ class ServiceModule {
         .setSmallIcon(R.drawable.ic_directions_run_black_24dp)
         .setContentTitle("Running App")
         .setContentText("00:00:00")
-        .setContentIntent(pendingIntent)
+        .setContentIntent(pendingIntent)//this is the intent that manages this notification
 
 
 

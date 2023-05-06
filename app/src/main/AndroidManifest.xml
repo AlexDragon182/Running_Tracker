@@ -9,6 +9,9 @@
 <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/> <!-- for our service -->
     <!-- google maps sdk comes with internet permission -->
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
 
     android:name=".BaseApplication"
@@ -57,6 +60,8 @@
     android:foregroundServiceType="location">
 
 </service>
+        <!--Specify the service in the Manifest, add it to manifest so it can be used-->
+        <!--Specify foreground service because it will the the way you will be using it-->
 
 
 

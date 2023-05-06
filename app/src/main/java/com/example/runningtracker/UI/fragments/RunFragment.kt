@@ -26,7 +26,7 @@ import pub.devrel.easypermissions.EasyPermissions
 
 @AndroidEntryPoint // to annotate view models with Dagger Hilt
 
-class RunFragment : Fragment(R.layout.fragment_run),EasyPermissions.PermissionCallbacks {
+class RunFragment : Fragment(R.layout.fragment_run),EasyPermissions.PermissionCallbacks {//implement the Easy permission Interface to implement a permission callback to get the results and use a dialog to handle a permission
 
  private var _binding: FragmentRunBinding? = null
  private val binding get() = _binding!!
@@ -85,18 +85,18 @@ viewmodel.runs.observe(viewLifecycleOwner, Observer { runAdapter.sumbitList(it)}
   layoutManager = LinearLayoutManager(requireContext())
  }
 
- private fun requestPersmissions () {
-  if(TrackingUtility.hasLocationPermissions(requireContext())){
+ private fun requestPersmissions () {// this function request permissions
+  if(TrackingUtility.hasLocationPermissions(requireContext())){//if the user already checked those permissions, require context makes sure context is not equal to null
    return
   }
-  if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
-   EasyPermissions.requestPermissions(
-    this ,"You need to accept this permissions to use this app",
+  if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){// if it didint accept the permissions before, checks if the device is running on android Q
+   EasyPermissions.requestPermissions(//easy permissions request the permissions in the constructor
+    this ,"You need to accept this permissions to use this app",//pass fragment, message in case of user denying permission, and permissions
     REQUEST_CODE_LOCATION_PERMISSION,
     Manifest.permission.ACCESS_COARSE_LOCATION,
     Manifest.permission.ACCESS_FINE_LOCATION,
    )
-  }else {
+  }else {//if it is not running on android Q
    EasyPermissions.requestPermissions(
     this ,"You need to accept this permissions to use this app",
     REQUEST_CODE_LOCATION_PERMISSION,
@@ -108,22 +108,21 @@ viewmodel.runs.observe(viewLifecycleOwner, Observer { runAdapter.sumbitList(it)}
  }
 
  override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-  if(EasyPermissions.somePermissionPermanentlyDenied(this,perms)) {
-   AppSettingsDialog.Builder(this).build().show()
-  }else{
-    requestPersmissions()
-   }
   }
  override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
-
+  if(EasyPermissions.somePermissionPermanentlyDenied(this,perms)) {//if a permition permanently dennied a permission , pass fragment and denied permissions , perms is a parameter of a function that is a list that contains the permissions denied
+   AppSettingsDialog.Builder(this).build().show()//this is the dialog that lead the user to app Settings in case
+  }else{
+   requestPersmissions()//if he does not denied them permanently
+  }
  }
 
- override fun onRequestPermissionsResult(
+ override fun onRequestPermissionsResult(//functions that handles permissions result in android library, whenever we request permissions
   requestCode: Int,
   permissions: Array<out String>,
   grantResults: IntArray
  ) {
-  super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+  super.onRequestPermissionsResult(requestCode, permissions, grantResults)//this redirects the result of the android library to the easy permissions library
   EasyPermissions.onRequestPermissionsResult(requestCode,permissions,grantResults,this)
 
  }

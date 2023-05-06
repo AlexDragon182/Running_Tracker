@@ -7,11 +7,12 @@ import android.os.Build
 import com.example.runningtracker.Service.Polyline
 import pub.devrel.easypermissions.EasyPermissions
 import java.util.concurrent.TimeUnit
-
+//this will only have functions we dont need an instance of this class
+// this is for requesting permitions
 object TrackingUtility {
 
-    fun hasLocationPermissions(context: Context): Boolean {
-        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+    fun hasLocationPermissions(context: Context): Boolean {//this function checks if the user granted permission
+        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {//checks if the device is running on android Q
             EasyPermissions.hasPermissions(
                 context,
                 Manifest.permission.ACCESS_FINE_LOCATION,

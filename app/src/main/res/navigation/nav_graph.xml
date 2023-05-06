@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
     app:startDestination="@id/setupFragment">
+    <!--creates global action so you can executed from whenever you want -->
 
     <action android:id="@+id/action_global_trackingFragment"
         app:destination="@+id/trackingFragment"

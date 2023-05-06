@@ -41,12 +41,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import timber.log.Timber
 import javax.inject.Inject
-
+//this is for handling the tracking service
 typealias Polyline = MutableList<LatLng>
 typealias Polylines = MutableList<Polyline>
 
 @AndroidEntryPoint
-class TrackingService : LifecycleService() {
+class TrackingService : LifecycleService() {//inherit from Lyfecycle Service because we need to observe live data objects
 
     var isFirstRun = true
     var serviceKilled = false
@@ -93,11 +93,11 @@ class TrackingService : LifecycleService() {
 
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {//this function gets called whenever we get send a command to our service
 
-        intent?.let{
-            when(it.action){
-                ACTION_START_OR_RESUME_SERVICE -> {
+        intent?.let{//gets called when we sent an intent so check if intent is null
+            when(it.action){// this is the service side of our comunication
+                ACTION_START_OR_RESUME_SERVICE -> {//type of intent
                     if(isFirstRun){
                         startTimer()
                         isFirstRun = false
@@ -228,21 +228,21 @@ class TrackingService : LifecycleService() {
         pathPoints.postValue(this)
     }?: pathPoints.postValue(mutableListOf(mutableListOf()))
 
-    private fun startForegroundService() {
+    private fun startForegroundService() {// function for starting a foreground service
         startTimer()
         isTracking.postValue(true)
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE)
-                as NotificationManager
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) // get a reference to notification manager
+                as NotificationManager// cast it as notification manager
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel(notificationManager)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {//if we are in android Oreo or later
+            createNotificationChannel(notificationManager)//create notification channel with the manager
         }
 
-        startForeground(NOTIFICATION_ID,baseNotificationBuilder.build())
+        startForeground(NOTIFICATION_ID,baseNotificationBuilder.build())// this tells the service that is a foreground service
 
         timeRunInSeconds.observe(this, Observer {
             if (!serviceKilled){
-                val notification = curNotificationBuilder
+                val notification = curNotificationBuilder// the actual notification
                     .setContentText(TrackingUtility.getFormattedStopWatchTime(it * 1000L))
                 notificationManager.notify(NOTIFICATION_ID, notification.build())
             }
@@ -253,8 +253,9 @@ class TrackingService : LifecycleService() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel(notificationManager: NotificationManager){
-        val channel = NotificationChannel(NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME,IMPORTANCE_LOW)
-        notificationManager.createNotificationChannel(channel)
+    private fun createNotificationChannel(notificationManager: NotificationManager){//create the notification channel to make service foreground
+        val channel = NotificationChannel(NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME,IMPORTANCE_LOW)//this pass the parameters to the channel
+        notificationManager.createNotificationChannel(channel)//creates notification channel with the parameters
+        //importance low so the timer dosent come with a sound
     }
 }
