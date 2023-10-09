@@ -42,8 +42,8 @@ import kotlinx.coroutines.*
 import timber.log.Timber
 import javax.inject.Inject
 //this is for handling the tracking service
-typealias Polyline = MutableList<LatLng>
-typealias Polylines = MutableList<Polyline>
+typealias Polyline = MutableList<LatLng>//differet name of a complex type, mutable list of lat longs
+typealias Polylines = MutableList<Polyline>//getthing the latlngs together
 
 @AndroidEntryPoint
 class TrackingService : LifecycleService() {//inherit from Lyfecycle Service because we need to observe live data objects
@@ -51,23 +51,26 @@ class TrackingService : LifecycleService() {//inherit from Lyfecycle Service bec
     var isFirstRun = true
     var serviceKilled = false
     @Inject
-    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    lateinit var fusedLocationProviderClient: FusedLocationProviderClient //Returns a single location fix representing the best estimate of the current location of the device
     private val timeRunInSeconds = MutableLiveData<Long>()
     @Inject
     lateinit var baseNotificationBuilder: NotificationCompat.Builder
     lateinit var curNotificationBuilder: NotificationCompat.Builder
+
+    // static objets are part of a class but no method is need it to use them. constants or methods
+    //no toma en cuenta las variables funeral de companion object.
     companion object {
-        val timeRunInMillis = MutableLiveData<Long>()
-        val isTracking = MutableLiveData<Boolean>()
-        val pathPoints = MutableLiveData<Polylines>()
+        val timeRunInMillis = MutableLiveData<Long>()//
+        val isTracking = MutableLiveData<Boolean>()//
+        val pathPoints = MutableLiveData<Polylines>()//holds track locations of all runs
 
     }
-
+// because they dosent  hold value this method porst initial values
     private fun postInitValues(){
-        isTracking.postValue(false)
-        pathPoints.postValue(mutableListOf())
-        timeRunInSeconds.postValue(0L)
-        timeRunInMillis.postValue(0L)
+        isTracking.postValue(false)//
+        pathPoints.postValue(mutableListOf())//
+        timeRunInSeconds.postValue(0L)//
+        timeRunInMillis.postValue(0L)//
     }
 
     override fun onCreate() {
@@ -78,7 +81,7 @@ class TrackingService : LifecycleService() {//inherit from Lyfecycle Service bec
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         isTracking.observe(this, Observer{
-            updateLocationTracking(it)
+            updateLocationTracking(it)//
             updateNotificationtrackingState(it)
         })
     }
@@ -180,32 +183,32 @@ class TrackingService : LifecycleService() {//inherit from Lyfecycle Service bec
     }
 
     @SuppressLint("MissingPermission")
-    private fun updateLocationTracking (isTracking : Boolean){
-        if(isTracking){
-            if(TrackingUtility.hasLocationPermissions(this)){
-                val request = com.google.android.gms.location.LocationRequest().apply {
-                    interval = LOCATION_UPDATE_INTERVAL
-                    fastestInterval = FASTEST_LOCATION_INTERVAL
-                    priority = PRIORITY_HIGH_ACCURACY
+    private fun updateLocationTracking (isTracking : Boolean){//if it is tracking youl want to resume updates and stop them when its not
+        if(isTracking){// if it is tracking equal to true
+            if(TrackingUtility.hasLocationPermissions(this)){//if tracking utility has location permissions
+                val request = com.google.android.gms.location.LocationRequest().apply {//request location request to check updates
+                    interval = LOCATION_UPDATE_INTERVAL //
+                    fastestInterval = FASTEST_LOCATION_INTERVAL //
+                    priority = PRIORITY_HIGH_ACCURACY //
                 }
                 fusedLocationProviderClient.requestLocationUpdates(//warning suppressed because permission is asked by another thing
                     request,
                     locationCallback,
-                    Looper.getMainLooper()
+                    Looper.getMainLooper() //
                 )
             }else{
-                fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+                fusedLocationProviderClient.removeLocationUpdates(locationCallback) //if it stops , remove those locations
             }
         }
     }
-
-    val locationCallback = object  : LocationCallback() {
-        override fun onLocationResult(p0: LocationResult) {
+//define location callback
+    val locationCallback = object  : LocationCallback() {//fused location provider client to request location updates, and deliver them to us
+        override fun onLocationResult(p0: LocationResult) {//ctrl + o
             super.onLocationResult(p0)
-            if(isTracking.value!!){
-                p0?.locations?.let { locations ->
-                    for (location in locations){
-                     addPathPoint(location)
+            if(isTracking.value!!){// if it is tracking
+                p0?.locations?.let { locations ->//hold locations //
+                    for (location in locations){// for all of location in locations
+                     addPathPoint(location)// whenever we retrieve a location add the location to the last polyline
                         Timber.d("NEW LOCATION LOCATION : ${location.latitude}, ${location.longitude}")
                     }
                 }
@@ -213,22 +216,23 @@ class TrackingService : LifecycleService() {//inherit from Lyfecycle Service bec
         }
     }
 
-    private fun addPathPoint(location:Location) {
-        location?.let{
-            val pos = LatLng(location.latitude,location.longitude)
-            pathPoints.value?.apply {
-                last().add(pos)
-                pathPoints.postValue(this)
+    private fun addPathPoint(location:Location) {//this adds a coordinate , to the last polyline of our polyline list.
+        location?.let{//if location is not equal to null
+            val pos = LatLng(location.latitude,location.longitude)// convert location to a latLng with the two parameters.
+            pathPoints.value?.apply {// add this position , to the last polyline of polyline list
+                last().add(pos)//get last polyline
+                pathPoints.postValue(this)//post value
             }
         }
     }
 
-    private fun addEmptyPolyline() = pathPoints.value?.apply{
-        add(mutableListOf())
-        pathPoints.postValue(this)
-    }?: pathPoints.postValue(mutableListOf(mutableListOf()))
+    private fun addEmptyPolyline() = pathPoints.value?.apply{//this pass no coordinates for when the run is paused.
+        add(mutableListOf())//add empthy list
+        pathPoints.postValue(this)//this refers to the polyline object and post nothing as new value
+    }?: pathPoints.postValue(mutableListOf(mutableListOf()))// in case it is null,post the first empty polly line
 
     private fun startForegroundService() {// function for starting a foreground service
+        addEmptyPolyline()// so it adds the first empty polyline
         startTimer()
         isTracking.postValue(true)
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) // get a reference to notification manager
@@ -256,6 +260,6 @@ class TrackingService : LifecycleService() {//inherit from Lyfecycle Service bec
     private fun createNotificationChannel(notificationManager: NotificationManager){//create the notification channel to make service foreground
         val channel = NotificationChannel(NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME,IMPORTANCE_LOW)//this pass the parameters to the channel
         notificationManager.createNotificationChannel(channel)//creates notification channel with the parameters
-        //importance low so the timer dosent come with a sound
+        //importance low so the timer dosnt come with a sound
     }
 }
